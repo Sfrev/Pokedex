@@ -8,14 +8,14 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 
-class CustomAdapter(private val dataSet: List<List<String>>, private val context: Context) :
+class CustomAdapter(private val dataSet: List<List<String>>) :
     RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
 
     /**
      * Provide a reference to the type of views that you are using
      * (custom ViewHolder).
      */
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val label: TextView
         val value: TextView
         init {
@@ -28,17 +28,19 @@ class CustomAdapter(private val dataSet: List<List<String>>, private val context
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         // Create a new view, which defines the UI of the list item
-        val view = LayoutInflater.from(context)
+        val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.recycler_item, viewGroup, false)
 
         return ViewHolder(view)
     }
 
     // Replace the contents of a view (invoked by the layout manager)
-    override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(viewHolder: CustomAdapter.ViewHolder, position: Int) {
 
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
+        println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOI" + dataSet.size + "\n" + dataSet + "\n" + dataSet.get(position))
+        println(dataSet.get(position).get(0) + " " + dataSet.get(position).get(1))
         viewHolder.label.text = dataSet.get(position).get(0)
         viewHolder.value.text = dataSet.get(position).get(1)
     }
