@@ -45,6 +45,7 @@
     </string>
     <string name="title_activity_pokemon_screen">PokemonScreen</string>
     <string name="title_activity_pokemon">activity_pokemon</string>
+    <string name="title_activity_main">CompletePokedex</string>
     <string name="title_activity_sfrevao">Sfrevao</string>
     <string name="instructions">Instruções</string>
     <string name="complete_pokedex">Pokédex Completa</string>

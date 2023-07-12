@@ -1,5 +1,6 @@
 package ufscar.dc.Pokedex
 
+import android.content.Intent
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +12,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.AdapterView
+import android.widget.Button
 import android.widget.GridView
 import android.widget.Toast
 import ufscar.dc.Pokedex.databinding.ActivityMainBinding
@@ -38,9 +40,18 @@ class MainActivity : AppCompatActivity() {
         cGridView.adapter = cAdapter
 
         cGridView.onItemClickListener = AdapterView.OnItemClickListener{
+//            TODO: add here our pokemon screen on click
             _,_,position,_ ->
             Toast.makeText(applicationContext, "DAMO", Toast.LENGTH_SHORT).show()
         }
+
+        val backMenu = findViewById<Button>(R.id.button_first)
+        backMenu.setOnClickListener{
+            val intent = Intent(this, MainScreen::class.java)
+            startActivity(intent)
+        }
+
+
 
     }
 

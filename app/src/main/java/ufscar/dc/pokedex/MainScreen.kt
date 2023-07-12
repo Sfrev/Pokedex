@@ -1,12 +1,9 @@
-package ufscar.dc.pokedex
+package ufscar.dc.Pokedex
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.content.Intent
 import android.widget.Button
-import ufscar.dc.Pokedex.MainActivity
-import ufscar.dc.Pokedex.PokemonScreen
-import ufscar.dc.Pokedex.R
 
 class MainScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,12 +16,12 @@ class MainScreen : AppCompatActivity() {
             //startActivity(intent)
         }
         val completePokedexButtonClick = findViewById<Button>(R.id.button_pokedex_completa)
-        instructionsButtonClick.setOnClickListener{
-            val intent = Intent(this, MainActivity::class.java)
+        completePokedexButtonClick.setOnClickListener{
+            val intent = Intent(this, Sfrevao::class.java)
             startActivity(intent)
         }
         val capturedPokensButtonClick = findViewById<Button>(R.id.button_pokemons_capturados)
-        instructionsButtonClick.setOnClickListener{
+        capturedPokensButtonClick.setOnClickListener{
             val intent = Intent(this, PokemonScreen::class.java)
             startActivity(intent)
         }
