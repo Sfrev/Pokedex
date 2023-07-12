@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/button_instrucoes"
+        android:layout_width="116dp"
+        android:layout_height="62dp"
+        android:backgroundTint="@color/red"
+        android:text="@string/instructions"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.804" />
+
+    <Button
+        android:id="@+id/button_pokedex_completa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="140dp"
+        android:backgroundTint="@color/red"
+        android:text="@string/complete_pokedex"
+        app:layout_constraintBottom_toTopOf="@+id/button_pokemons_capturados"
+        tools:layout_editor_absoluteX="121dp" />
+
+    <Button
+        android:id="@+id/button_pokemons_capturados"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/red"
+        android:text="@string/captured_pokemons"
+        tools:layout_editor_absoluteX="108dp"
+        tools:layout_editor_absoluteY="482dp" />
+
+    <TextView
+        android:id="@+id/textViewTitle"
+        android:layout_width="335dp"
+        android:layout_height="130dp"
+        android:fontFamily="@font/pokemon_solid"
+        android:lineSpacingExtra="8sp"
+        android:text="@string/title"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="#FFC107"
+        android:textSize="48sp"
+        android:typeface="normal"
+        tools:layout_editor_absoluteX="38dp"
+        tools:layout_editor_absoluteY="47dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>
