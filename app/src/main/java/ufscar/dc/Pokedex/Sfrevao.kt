@@ -1,21 +1,30 @@
 package ufscar.dc.Pokedex
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -29,11 +38,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -60,7 +69,7 @@ class Sfrevao : ComponentActivity() {
             PokedexTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = MaterialTheme.colorScheme.surface
                 ) {
                     Greeting(pokeApi, imageLoader)
                 }
@@ -72,17 +81,109 @@ class Sfrevao : ComponentActivity() {
 const val PAGE_SIZE = 40
 
 @Composable
+fun CardTitle(pokemonName: String) {
+    Text(
+        pokemonName,
+        color = MaterialTheme.colorScheme.onSurface,
+        fontSize = 16.sp,
+        maxLines = 1,
+    )
+}
+
+@Composable
+fun CardTypeColumnItem(ty: String) {
+    Surface(Modifier.padding(2.dp), RoundedCornerShape(4.dp), tonalElevation = 2.dp) {
+        Text(
+            ty,
+            color = MaterialTheme.colorScheme.onSurface,
+            fontSize = 12.sp,
+            modifier = Modifier.padding(4.dp),
+        )
+    }
+}
+
+@Composable
+fun CardImage(page: Int, item: Int, imageLoader: ImageLoader?) {
+    if (imageLoader != null) {
+        val spriteId = 1 + page * PAGE_SIZE + item
+        AsyncImage(
+            model = "https://raw.githubusercontent.com/PokeAPI/sprites/ca5a7886c10753144e6fae3b69d45a4d42a449b4/sprites/pokemon/$spriteId.png",
+            contentDescription = "",
+            imageLoader = imageLoader,
+            placeholder = painterResource(id = R.drawable.creature_placeholder),
+        )
+    } else {
+        Image(ImageBitmap.imageResource(id = R.drawable.img), "")
+    }
+}
+
+@Composable
+fun ListedPokemonCard(
+    pokeList: PokemonList?,
+    page: Int,
+    item: Int,
+    pokeApi: PokeApi?,
+    imageLoader: ImageLoader?,
+) {
+    val context = LocalContext.current
+
+    Surface(
+        Modifier.padding(5.dp)
+            .clip(RoundedCornerShape(12.dp))
+            .clickable {
+                val intent = Intent(context, PokemonScreen::class.java)
+                intent.putExtra("id", 1 + page * PAGE_SIZE + item)
+                context.startActivity(intent)
+            },
+        RoundedCornerShape(12.dp),
+        tonalElevation = 1.dp,
+    ) {
+        Column(Modifier.padding(8.dp)) {
+            if (pokeApi != null) {
+                if (pokeList != null) {
+                    val name = pokeList.results[item].name
+                    CardTitle(name.replaceFirstChar { it.titlecase(Locale.getDefault()) })
+                } else {
+                    CardTitle("??????????")
+                }
+            } else {
+                CardTitle("Jesus ${page * PAGE_SIZE + item}")
+            }
+
+            Row(
+                Modifier
+                    .height(IntrinsicSize.Min)
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
+                Column(horizontalAlignment = Alignment.Start) {
+                    CardTypeColumnItem("Jesus1")
+                    CardTypeColumnItem("Jesus2")
+                }
+
+                Box(contentAlignment = Alignment.BottomEnd) {
+                    Surface(tonalElevation = 2.dp, shape = RoundedCornerShape(12.dp)) {
+                        CardImage(page, item, imageLoader)
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
 fun Greeting(pokeApi: PokeApi?, imageLoader: ImageLoader?) {
     Column(
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(
-            "PokemonMassa",
-            fontFamily = FontFamily(Font(R.font.pokemon_hollow)),
-            fontSize = 48.sp,
-            modifier = Modifier.padding(top = 20.dp),
-        )
+        val context = LocalContext.current
+
+        Row(Modifier.padding(10.dp).fillMaxWidth(), Arrangement.Start) {
+            FilledIconButton(onClick = { (context as? Activity)?.finish() }) {
+                Icon(Icons.Default.ArrowBack, "")
+            }
+        }
 
         var page by remember { mutableStateOf(0) }
 
@@ -95,45 +196,11 @@ fun Greeting(pokeApi: PokeApi?, imageLoader: ImageLoader?) {
         }
 
         LazyVerticalGrid(
-            columns = GridCells.Adaptive(100.dp),
+            columns = GridCells.Fixed(2),
             contentPadding = PaddingValues(horizontal = 15.dp),
         ) {
-            item(span = { GridItemSpan(maxLineSpan) }) {
-                Image(
-                    ImageBitmap.imageResource(id = R.drawable.img),
-                    "",
-                    modifier = Modifier.padding(all = 15.dp),
-                )
-            }
-
             items(PAGE_SIZE) { item ->
-                Column(
-                    modifier = Modifier.padding(all = 3.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    if (imageLoader != null) {
-                        val spriteId = 1 + page * PAGE_SIZE + item
-                        AsyncImage(
-                            model = "https://raw.githubusercontent.com/PokeAPI/sprites/ca5a7886c10753144e6fae3b69d45a4d42a449b4/sprites/pokemon/$spriteId.png",
-                            contentDescription = "",
-                            imageLoader = imageLoader,
-                            placeholder = painterResource(id = R.drawable.creature_placeholder),
-                        )
-                    } else {
-                        Image(ImageBitmap.imageResource(id = R.drawable.img), "")
-                    }
-
-                    if (pokeApi != null) {
-                        if (pokeList != null) {
-                            val name = pokeList!!.results[item].name
-                            Text(name.replaceFirstChar { it.titlecase(Locale.getDefault()) })
-                        } else {
-                            Text("??????????")
-                        }
-                    } else {
-                        Text("Jesus ${page * PAGE_SIZE + item}")
-                    }
-                }
+                ListedPokemonCard(pokeList, page, item, pokeApi, imageLoader)
             }
 
             item(span = { GridItemSpan(maxLineSpan) }) {
