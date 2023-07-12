@@ -46,4 +46,8 @@
     <string name="title_activity_pokemon_screen">PokemonScreen</string>
     <string name="title_activity_pokemon">activity_pokemon</string>
     <string name="title_activity_sfrevao">Sfrevao</string>
+    <string name="instructions">Instruções</string>
+    <string name="complete_pokedex">Pokédex Completa</string>
+    <string name="captured_pokemons">Pokemons Capturados</string>
+    <string name="title">POKÉDEX</string>
 </resources>

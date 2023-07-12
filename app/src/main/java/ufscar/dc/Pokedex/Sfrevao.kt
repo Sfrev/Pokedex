@@ -69,7 +69,7 @@ class Sfrevao : ComponentActivity() {
     }
 }
 
-val PAGE_SIZE = 40
+const val PAGE_SIZE = 40
 
 @Composable
 fun Greeting(pokeApi: PokeApi?, imageLoader: ImageLoader?) {
