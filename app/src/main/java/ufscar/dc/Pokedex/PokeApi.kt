@@ -22,6 +22,14 @@ data class PokemonList(
     val results: List<PokemonListEntry>,
 )
 
+data class PokemonType(
+    val name: String,
+)
+
+data class Magalmon(
+    val type: PokemonType
+)
+
 data class Pokemon(
     val id: Int,
     val name: String,
@@ -29,6 +37,7 @@ data class Pokemon(
     val height: Int,
     val isDefault: Boolean,
     val weight: Int,
+    val types: List<Magalmon>,
 )
 
 interface PokeApi {
