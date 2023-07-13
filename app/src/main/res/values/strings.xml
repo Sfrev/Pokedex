@@ -8,20 +8,6 @@
     <string name="toggle_off" translatable="false">Wild</string>
     <string name="action_settings" translatable="false">action</string>
     <string name="previous">Previous</string>
-    <string name="instructions_text" translatable="false">
-        Para utilizar é simples, na tela de pokedex completa você pode ver todos os
-        pokemons e clicar no desejado, o que te destinará a outra tela, do pokémon selecionado
-        lá você pode ver todos seus atributos e estatísticas, além de clicar no canto superior direito
-        e definir esse pokémon como Wild (não visto / pego) ou Caught (Capturado).\n
-        Na tela de pokemons capturados, você verá todos (e somente) os pokémons que você já capturou!!\n
-        É bem simples!!\n\n
-
-        Bom divertimento!!\n\n
-
-
-        Gotta Catch\'em All!!
-
-    </string>
     <string name="lorem_ipsum" translatable="false">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
         volutpat, dolor id interdum ullamcorper, risus dolor egestas lectus, sit amet mattis purus
@@ -67,4 +53,5 @@
     <string name="complete_pokedex">Complete Pokedex</string>
     <string name="captured_pokemons">Captured Pokemons</string>
     <string name="title" translatable="false">POKÉDEX</string>
+    <string name="instructions_text">To use it is simple, in the complete pokedex screen you can see all the pokemons and click on the desired one, which will send you to another screen, from the selected pokémon there you can see all its attributes and statistics, in addition to clicking on the upper right corner and set this pokémon to Wild (unseen/caught) or Caught (Captured). On the screen of captured pokemons, you will see all (and only) the pokémons that you have already captured!! It\'s quite simple!! Have a good time!! Gotta Catch\'em All!!</string>
 </resources>

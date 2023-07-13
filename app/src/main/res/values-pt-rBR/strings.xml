@@ -3,6 +3,7 @@
     <string name="first_fragment_label">Primeiro Fragmento</string>
     <string name="second_fragment_label">Segundo Fragmento</string>
     <string name="previous">Anterior</string>
+    <string name="instructions_text">"Para utilizar é simples, na tela de pokedex completa você pode ver todos os         pokemons e clicar no desejado, o que te destinará a outra tela, do pokémon selecionado         lá você pode ver todos seus atributos e estatísticas, além de clicar no canto superior direito         e definir esse pokémon como Wild (não visto / pego) ou Caught (Capturado).          Na tela de pokemons capturados, você verá todos (e somente) os pokémons que você já capturou!!          É bem simples!!            Bom divertimento!!             Gotta Catch'em All!!      "</string>
     <string name="instructions">Instruções</string>
     <string name="complete_pokedex">Pokédex Completa</string>
     <string name="captured_pokemons">Pokemons Capturados</string>

@@ -196,7 +196,7 @@ fun ListedPokemonCard(
 
                 CardTypeColumn(pokemon, ids, item)
 
-                if (pokeApi != null && ids!!.find { it == 1 + page * PAGE_SIZE } != null) {
+                if (pokeApi != null && ids!!.find { it == 1 + page * PAGE_SIZE + item} != null) {
                     LaunchedEffect(Unit) {
                         pokemon = pokeApi.getPokemon(1 + page * PAGE_SIZE + item).body()
                     }
