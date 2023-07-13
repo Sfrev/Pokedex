@@ -1,6 +1,11 @@
 package ufscar.dc.Pokedex
 
+import android.os.AsyncTask
 import android.os.Bundle
+import android.os.PersistableBundle
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
@@ -11,62 +16,107 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.squareup.picasso.Picasso
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.jetbrains.annotations.Async
+import retrofit2.Response
 import ufscar.dc.Pokedex.databinding.ActivityPokemonScreenBinding
 
-class PokemonScreen : AppCompatActivity() {
+class PokemonScreen : AppCompatActivity(), CoroutineScope by MainScope(){
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityPokemonScreenBinding
 
     private var layoutManager: RecyclerView.LayoutManager? = null
     private var adapter: RecyclerView.Adapter<CustomAdapter.ViewHolder>? = null
+    private var rList = ArrayList<ArrayList<String>>()
+    private var recyclerView: RecyclerView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        val pokeApi = getPokeApi(this.applicationContext).create(PokeApi::class.java)
+//        println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
+//        println(pokeApi)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pokemon_screen)
 
         layoutManager = LinearLayoutManager(this)
+        recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
 
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
+        recyclerView!!.layoutManager = layoutManager
+        println("DEGUB MANUAL")
+        val id = intent.getIntExtra("id", -1)
 
-        recyclerView.layoutManager = layoutManager
+//        var rList = ArrayList<ArrayList<String>>()
+
+        GlobalScope.launch(Dispatchers.IO) {
+            val poke = getPoke(pokeApi, id)
+
+            val text = findViewById<TextView>(R.id.textView)
+
+            text.setText(poke!!.name)
+
+            val image = findViewById<ImageView>(R.id.imageView)
 
 
-        var rList = ArrayList<ArrayList<String>>()
+            rList = listUpd(poke)
 
-        for (i in 1..10){
-            val first = listOf("Nome", "Hoje", "Truco", "Damo", "Kaline", "Sfrev", "Magal").asSequence().shuffled().find {true}
-            val second = listOf("Esquisito", "Hoje", "Truco", "Damo", "Kaline", "Sfrev", "Magal").asSequence().shuffled().find {true}
-            rList += arrayListOf<String>(first!!, second!!)
+            println("rList = " + rList)
+            withContext(Dispatchers.Main){
+                Picasso.get().load("https://raw.githubusercontent.com/PokeAPI/sprites/ca5a7886c10753144e6fae3b69d45a4d42a449b4/sprites/pokemon/$id.png").into(image)
+                adapter = CustomAdapter(rList)
+                recyclerView!!.adapter = adapter
+            }
+
         }
 
-        println("CRIADOOOOOOOOOOOO:\n" + rList)
+        val back = findViewById<FloatingActionButton>(R.id.floatingActionButton)
+        back.setOnClickListener{
+            finish()
+        }
 
-        adapter = CustomAdapter(rList)
 
-        recyclerView.adapter = adapter
-//        val layMan = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-//        recyclerView.layoutManager = layMan
-//        binding = ActivityPokemonScreenBinding.inflate(layoutInflater)
-//        setContentView(binding.root)
-
-//        setSupportActionBar(binding.toolbar)
-
-//        val navController = findNavController(R.id.nav_host_fragment_content_pokemon_screen)
-//        appBarConfiguration = AppBarConfiguration(navController.graph)
-//        setupActionBarWithNavController(navController, appBarConfiguration)
-//
-//        binding.fab.setOnClickListener { view ->
-//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                .setAnchorView(R.id.fab)
-//                .setAction("Action", null).show()
-//        }
     }
 
-//    override fun onSupportNavigateUp(): Boolean {
-//        val navController = findNavController(R.id.nav_host_fragment_content_pokemon_screen)
-//        return navController.navigateUp(appBarConfiguration)
-//                || super.onSupportNavigateUp()
-//    }
+    suspend fun listUpd(poke: Pokemon) : ArrayList<ArrayList<String>>{
+        val myList = ArrayList<ArrayList<String>>()
+        val asyncUpd = async {
+            val Labels = listOf("Poke IDX:", "Base Experience", "Height", "Weight", "Initial Pokemon?", "Types")
+            val values = listOf(poke.id.toString(), poke.baseExperience.toString(), poke.height.toString(), poke.weight.toString(), if(poke.isDefault) "True" else "False", poke.types)
+            for (i in 0..Labels.size-1){
+                if(i == Labels.size-1){
+                    println("Sfrev " + values[i])
+                    val arr = values[i] as List<Magalmon>
+                    for(j in 0..arr.size-1){
+                        myList += arrayListOf("Type ${j+1}", arr[j].type.name)
+                    }
+                }
+                else{
+                    myList += arrayListOf(Labels[i], values[i].toString())
+                }
+            }
+        }
+
+        asyncUpd.await()
+        return myList
+    }
+
+    suspend fun getPoke(pokeApi: PokeApi?, id: Int?): Pokemon? {
+        val asyncPoke = async {
+            pokeApi!!.getPokemon(id!!.toInt())
+        }
+        return asyncPoke.await().body()
+
+    }
+
+
 }
+

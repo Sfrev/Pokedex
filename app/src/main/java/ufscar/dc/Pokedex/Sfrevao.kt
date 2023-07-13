@@ -43,6 +43,8 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -85,6 +87,7 @@ fun CardTitle(pokemonName: String) {
     Text(
         pokemonName,
         color = MaterialTheme.colorScheme.onSurface,
+        fontFamily = FontFamily(Font(R.font.pokemon_solid)),
         fontSize = 16.sp,
         maxLines = 1,
     )
@@ -109,7 +112,7 @@ fun CardImage(page: Int, item: Int, imageLoader: ImageLoader?) {
         AsyncImage(
             model = "https://raw.githubusercontent.com/PokeAPI/sprites/ca5a7886c10753144e6fae3b69d45a4d42a449b4/sprites/pokemon/$spriteId.png",
             contentDescription = "",
-            imageLoader = imageLoader,
+            imageLoader = imageLoader!!,
             placeholder = painterResource(id = R.drawable.creature_placeholder),
         )
     } else {
@@ -156,10 +159,6 @@ fun ListedPokemonCard(
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
-                Column(horizontalAlignment = Alignment.Start) {
-                    CardTypeColumnItem("Jesus1")
-                    CardTypeColumnItem("Jesus2")
-                }
 
                 Box(contentAlignment = Alignment.BottomEnd) {
                     Surface(tonalElevation = 2.dp, shape = RoundedCornerShape(12.dp)) {
