@@ -69,13 +69,16 @@ class PokemonScreen : AppCompatActivity(), CoroutineScope by MainScope(){
             val poke = getPoke(pokeApi, id)
 
             val text = findViewById<TextView>(R.id.textView)
+            println(poke)
 
-            text.setText(poke!!.name.replaceFirstChar { it.titlecase(Locale.getDefault()) })
+            val name = poke?.name?.replaceFirstChar { it.titlecase(Locale.getDefault()) } ?: "JESUS"
+
+            text.setText(name)
 
             val image = findViewById<ImageView>(R.id.imageView)
 
-
-            rList = listUpd(poke)
+            if (poke != null)
+                rList = listUpd(poke)
 
             println("rList = " + rList)
             withContext(Dispatchers.Main){

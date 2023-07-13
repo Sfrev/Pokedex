@@ -14,6 +14,7 @@ class MainScreen : AppCompatActivity() {
 
         instructionsButtonClick.setOnClickListener{
             supportFragmentManager.beginTransaction().add(R.id.container, FirstFragment()).commit()
+            println("A")
 //            val intent = Intent(this, FirstFragment::class.java)
 //            startActivity(intent)
         }
