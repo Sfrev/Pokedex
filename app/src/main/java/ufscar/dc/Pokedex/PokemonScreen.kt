@@ -33,6 +33,7 @@ import org.jetbrains.annotations.Async
 import retrofit2.Response
 import ufscar.dc.Pokedex.databinding.ActivityPokemonScreenBinding
 import java.lang.Exception
+import java.util.Locale
 
 class PokemonScreen : AppCompatActivity(), CoroutineScope by MainScope(){
 
@@ -60,6 +61,7 @@ class PokemonScreen : AppCompatActivity(), CoroutineScope by MainScope(){
         recyclerView!!.layoutManager = layoutManager
         println("DEGUB MANUAL")
         val id = intent.getIntExtra("id", -1)
+        val captured = intent.getBooleanExtra("captured", false)
 
 //        var rList = ArrayList<ArrayList<String>>()
 
@@ -68,7 +70,7 @@ class PokemonScreen : AppCompatActivity(), CoroutineScope by MainScope(){
 
             val text = findViewById<TextView>(R.id.textView)
 
-            text.setText(poke!!.name)
+            text.setText(poke!!.name.replaceFirstChar { it.titlecase(Locale.getDefault()) })
 
             val image = findViewById<ImageView>(R.id.imageView)
 
@@ -86,6 +88,10 @@ class PokemonScreen : AppCompatActivity(), CoroutineScope by MainScope(){
 
 
         val toggle = findViewById<ToggleButton>(R.id.toggleButton2)
+
+        if(captured){
+            toggle.isEnabled = false
+        }
 
 
         val ids = dbHelper.getAllPoke()

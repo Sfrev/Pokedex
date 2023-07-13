@@ -3,12 +3,25 @@
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
-    <string name="next" translatable="false">SFREVAO</string>
+    <string name="next" translatable="false">Voltar</string>
     <string name="toggle_on" translatable="false">Caught</string>
     <string name="toggle_off" translatable="false">Wild</string>
     <string name="action_settings" translatable="false">action</string>
     <string name="previous">Previous</string>
+    <string name="instructions_text" translatable="false">
+        Para utilizar é simples, na tela de pokedex completa você pode ver todos os
+        pokemons e clicar no desejado, o que te destinará a outra tela, do pokémon selecionado
+        lá você pode ver todos seus atributos e estatísticas, além de clicar no canto superior direito
+        e definir esse pokémon como Wild (não visto / pego) ou Caught (Capturado).\n
+        Na tela de pokemons capturados, você verá todos (e somente) os pokémons que você já capturou!!\n
+        É bem simples!!\n\n
 
+        Bom divertimento!!\n\n
+
+
+        Gotta Catch\'em All!!
+
+    </string>
     <string name="lorem_ipsum" translatable="false">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
         volutpat, dolor id interdum ullamcorper, risus dolor egestas lectus, sit amet mattis purus
@@ -49,6 +62,7 @@
     <string name="title_activity_pokemon" translatable="false">activity_pokemon</string>
     <string name="title_activity_main" translatable="false">CompletePokedex</string>
     <string name="title_activity_sfrevao" translatable="false">Sfrevao</string>
+    <string name="title_activity_captured_sfrevao" translatable="false">CapturedSfrevao</string>
     <string name="instructions">Instructions</string>
     <string name="complete_pokedex">Complete Pokedex</string>
     <string name="captured_pokemons">Captured Pokemons</string>

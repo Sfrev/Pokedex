@@ -43,6 +43,12 @@
             android:label="@string/title_activity_pokemon_screen"
             android:theme="@style/Theme.Pokedex">
         </activity>
+        <activity
+            android:name=".CapturedSfrevao"
+            android:exported="false"
+            android:label="@string/title_activity_captured_sfrevao"
+            android:theme="@style/Theme.Pokedex"
+            />
     </application>
 
 </manifest>

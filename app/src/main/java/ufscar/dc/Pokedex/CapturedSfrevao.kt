@@ -58,10 +58,11 @@ import coil.disk.DiskCache
 import ufscar.dc.Pokedex.ui.theme.PokedexTheme
 import java.util.Locale
 
-class Sfrevao : ComponentActivity() {
+class CapturedSfrevao : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         val pokeApi = getPokeApi(this.applicationContext).create(PokeApi::class.java)
-
+        val dbHelper = DbHelper(this)
+        val ids = dbHelper.getAllPoke()
         val imageLoader = ImageLoader.Builder(this.applicationContext)
             .diskCache {
                 DiskCache.Builder()
@@ -77,13 +78,14 @@ class Sfrevao : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.surface
                 ) {
-                    Greeting(pokeApi, imageLoader)
+                    Greeting(ids, pokeApi, imageLoader)
                 }
             }
         }
     }
+}
 
-val PAGE_SIZE = 40
+const val PAGE_SIZE = 40
 
 @Composable
 fun CardTitle(pokemonName: String) {
@@ -114,8 +116,8 @@ fun CardTypeColumnItem(ty: String) {
 }
 
 @Composable
-fun CardTypeColumn(pokemon: Pokemon?) {
-    if (pokemon != null) {
+fun CardTypeColumn(pokemon: Pokemon?, ids: ArrayList<Int>?, item: Int) {
+    if (pokemon != null && ids!!.find { it == item+1 } != null) {
         LazyColumn() {
             items(pokemon.types) { type ->
                 CardTypeColumnItem(type.type.name.replaceFirstChar { it.titlecase() })
@@ -127,8 +129,8 @@ fun CardTypeColumn(pokemon: Pokemon?) {
 }
 
 @Composable
-fun CardImage(page: Int, item: Int, imageLoader: ImageLoader?) {
-    if (imageLoader != null) {
+fun CardImage(page: Int, item: Int, imageLoader: ImageLoader?, ids: ArrayList<Int>?) {
+    if (imageLoader != null && ids!!.find { it == item+1 } != null) {
         val spriteId = 1 + page * PAGE_SIZE + item
         AsyncImage(
             model = "https://raw.githubusercontent.com/PokeAPI/sprites/ca5a7886c10753144e6fae3b69d45a4d42a449b4/sprites/pokemon/$spriteId.png",
@@ -153,6 +155,7 @@ fun ListedPokemonCard(
     item: Int,
     pokeApi: PokeApi?,
     imageLoader: ImageLoader?,
+    ids: ArrayList<Int>?,
 ) {
     val context = LocalContext.current
 
@@ -161,20 +164,23 @@ fun ListedPokemonCard(
             .padding(5.dp)
             .clip(RoundedCornerShape(12.dp))
             .clickable {
-                val intent = Intent(context, PokemonScreen::class.java)
-                intent.putExtra("id", 1 + page * PAGE_SIZE + item)
-                context.startActivity(intent)
+                if(ids!!.find { it == item+1 } != null){
+                    val intent = Intent(context, PokemonScreen::class.java)
+                    intent.putExtra("captured", true)
+                    intent.putExtra("id", 1 + page * PAGE_SIZE + item)
+                    context.startActivity(intent)
+                }
             },
         RoundedCornerShape(12.dp),
         tonalElevation = 1.dp,
     ) {
         Column(Modifier.padding(8.dp)) {
             if (pokeApi != null) {
-                if (pokeList != null) {
+                if (pokeList != null && ids!!.find { it == item+1 } != null) {
                     val name = pokeList.results[item].name
-                    CardTitle(name.replaceFirstChar { it.titlecase(Locale.getDefault()) })
+                    CardTitle("${item+1} - "+name.replaceFirstChar { it.titlecase(Locale.getDefault()) })
                 } else {
-                    CardTitle("??????????")
+                    CardTitle("${item+1} - ??????????")
                 }
             } else {
                 CardTitle("Jesus ${page * PAGE_SIZE + item}")
@@ -188,22 +194,22 @@ fun ListedPokemonCard(
             ) {
                 var pokemon by remember { mutableStateOf<Pokemon?>(null) }
 
-                CardTypeColumn(pokemon)
+                CardTypeColumn(pokemon, ids, item)
 
-                if (pokeApi != null) {
+                if (pokeApi != null && ids!!.find { it == 1 + page * PAGE_SIZE } != null) {
                     LaunchedEffect(Unit) {
                         pokemon = pokeApi.getPokemon(1 + page * PAGE_SIZE + item).body()
                     }
                 } else {
                     Column {
-                        CardTypeColumnItem("Jesus1")
-                        CardTypeColumnItem("Jesus2")
+                        CardTypeColumnItem("?????????")
+                        CardTypeColumnItem("?????????")
                     }
                 }
 
                 Box {
                     Surface(tonalElevation = 2.dp, shape = RoundedCornerShape(12.dp)) {
-                        CardImage(page, item, imageLoader)
+                        CardImage(page, item, imageLoader, ids)
                     }
                 }
             }
@@ -212,7 +218,7 @@ fun ListedPokemonCard(
 }
 
 @Composable
-fun Greeting(pokeApi: PokeApi?, imageLoader: ImageLoader?) {
+fun Greeting(ids: ArrayList<Int>?, pokeApi: PokeApi?, imageLoader: ImageLoader?) {
     Column(
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -243,7 +249,7 @@ fun Greeting(pokeApi: PokeApi?, imageLoader: ImageLoader?) {
             contentPadding = PaddingValues(horizontal = 15.dp),
         ) {
             items(PAGE_SIZE) { item ->
-                ListedPokemonCard(pokeList, page, item, pokeApi, imageLoader)
+                ListedPokemonCard(pokeList, page, item, pokeApi, imageLoader, ids)
             }
 
             item(span = { GridItemSpan(maxLineSpan) }) {
@@ -268,7 +274,6 @@ fun Greeting(pokeApi: PokeApi?, imageLoader: ImageLoader?) {
 @Composable
 fun GreetingPreview() {
     PokedexTheme {
-        Greeting(null, null)
+        Greeting(null, null, null)
     }
-}
 }
