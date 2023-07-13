@@ -10,11 +10,6 @@ class MainScreen : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_screen)
 
-        val instructionsButtonClick = findViewById<Button>(R.id.button_instrucoes)
-        instructionsButtonClick.setOnClickListener{
-            //val intent = Intent(this, Instrucoes::class.java)
-            //startActivity(intent)
-        }
         val completePokedexButtonClick = findViewById<Button>(R.id.button_pokedex_completa)
         completePokedexButtonClick.setOnClickListener{
             val intent = Intent(this, Sfrevao::class.java)
