@@ -1,13 +1,12 @@
 <resources>
-    <string name="app_name">Pokedex</string>
-    <string name="action_settings">Settings</string>
+    <string name="app_name" translatable="false">Pokedex</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">SFREVAO</string>
+    <string name="next" translatable="false">SFREVAO</string>
     <string name="previous">Previous</string>
 
-    <string name="lorem_ipsum">
+    <string name="lorem_ipsum" translatable="false">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
         volutpat, dolor id interdum ullamcorper, risus dolor egestas lectus, sit amet mattis purus
         dui nec risus. Maecenas non sodales nisi, vel dictum dolor. Class aptent taciti sociosqu ad
@@ -43,12 +42,12 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
-    <string name="title_activity_pokemon_screen">PokemonScreen</string>
-    <string name="title_activity_pokemon">activity_pokemon</string>
-    <string name="title_activity_main">CompletePokedex</string>
-    <string name="title_activity_sfrevao">Sfrevao</string>
-    <string name="instructions">Instruções</string>
-    <string name="complete_pokedex">Pokédex Completa</string>
-    <string name="captured_pokemons">Pokemons Capturados</string>
-    <string name="title">POKÉDEX</string>
+    <string name="title_activity_pokemon_screen" translatable="false">PokemonScreen</string>
+    <string name="title_activity_pokemon" translatable="false">activity_pokemon</string>
+    <string name="title_activity_main" translatable="false">CompletePokedex</string>
+    <string name="title_activity_sfrevao" translatable="false">Sfrevao</string>
+    <string name="instructions">Instructions</string>
+    <string name="complete_pokedex">Complete Pokedex</string>
+    <string name="captured_pokemons">Captured Pokemons</string>
+    <string name="title" translatable="false">POKÉDEX</string>
 </resources>
