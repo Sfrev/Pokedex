@@ -11,9 +11,11 @@ class MainScreen : AppCompatActivity() {
         setContentView(R.layout.activity_main_screen)
 
         val instructionsButtonClick = findViewById<Button>(R.id.button_instrucoes)
+
         instructionsButtonClick.setOnClickListener{
-            //val intent = Intent(this, Instrucoes::class.java)
-            //startActivity(intent)
+            supportFragmentManager.beginTransaction().add(R.id.container, FirstFragment()).commit()
+//            val intent = Intent(this, FirstFragment::class.java)
+//            startActivity(intent)
         }
         val completePokedexButtonClick = findViewById<Button>(R.id.button_pokedex_completa)
         completePokedexButtonClick.setOnClickListener{
@@ -22,7 +24,7 @@ class MainScreen : AppCompatActivity() {
         }
         val capturedPokensButtonClick = findViewById<Button>(R.id.button_pokemons_capturados)
         capturedPokensButtonClick.setOnClickListener{
-            val intent = Intent(this, PokemonScreen::class.java)
+            val intent = Intent(this, CapturedSfrevao::class.java)
             startActivity(intent)
         }
     }
