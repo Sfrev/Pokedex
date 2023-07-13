@@ -10,13 +10,16 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -45,6 +48,7 @@ import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -95,13 +99,31 @@ fun CardTitle(pokemonName: String) {
 
 @Composable
 fun CardTypeColumnItem(ty: String) {
-    Surface(Modifier.padding(2.dp), RoundedCornerShape(4.dp), tonalElevation = 2.dp) {
+    Surface(
+        Modifier.padding(2.dp).defaultMinSize(50.dp),
+        RoundedCornerShape(4.dp),
+        tonalElevation = 2.dp,
+    ) {
         Text(
             ty,
             color = MaterialTheme.colorScheme.onSurface,
             fontSize = 12.sp,
             modifier = Modifier.padding(4.dp),
+            textAlign = TextAlign.Center,
         )
+    }
+}
+
+@Composable
+fun CardTypeColumn(pokemon: Pokemon?) {
+    if (pokemon != null) {
+        LazyColumn() {
+            items(pokemon.types) { type ->
+                CardTypeColumnItem(type.type.name.replaceFirstChar { it.titlecase() })
+            }
+        }
+    } else {
+        Column {}
     }
 }
 
@@ -112,11 +134,16 @@ fun CardImage(page: Int, item: Int, imageLoader: ImageLoader?) {
         AsyncImage(
             model = "https://raw.githubusercontent.com/PokeAPI/sprites/ca5a7886c10753144e6fae3b69d45a4d42a449b4/sprites/pokemon/$spriteId.png",
             contentDescription = "",
-            imageLoader = imageLoader!!,
+            imageLoader = imageLoader,
             placeholder = painterResource(id = R.drawable.creature_placeholder),
+            modifier = Modifier.size(80.dp),
         )
     } else {
-        Image(ImageBitmap.imageResource(id = R.drawable.img), "")
+        Image(
+            ImageBitmap.imageResource(id = R.drawable.img),
+            contentDescription = "",
+            modifier = Modifier.size(80.dp),
+        )
     }
 }
 
@@ -131,7 +158,8 @@ fun ListedPokemonCard(
     val context = LocalContext.current
 
     Surface(
-        Modifier.padding(5.dp)
+        Modifier
+            .padding(5.dp)
             .clip(RoundedCornerShape(12.dp))
             .clickable {
                 val intent = Intent(context, PokemonScreen::class.java)
@@ -155,11 +183,26 @@ fun ListedPokemonCard(
 
             Row(
                 Modifier
-                    .height(IntrinsicSize.Min)
+                    .height(80.dp)
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
-                Box(contentAlignment = Alignment.BottomEnd) {
+                var pokemon by remember { mutableStateOf<Pokemon?>(null) }
+
+                CardTypeColumn(pokemon)
+
+                if (pokeApi != null) {
+                    LaunchedEffect(Unit) {
+                        pokemon = pokeApi.getPokemon(1 + page * PAGE_SIZE + item).body()
+                    }
+                } else {
+                    Column {
+                        CardTypeColumnItem("Jesus1")
+                        CardTypeColumnItem("Jesus2")
+                    }
+                }
+
+                Box {
                     Surface(tonalElevation = 2.dp, shape = RoundedCornerShape(12.dp)) {
                         CardImage(page, item, imageLoader)
                     }
@@ -177,7 +220,10 @@ fun Greeting(pokeApi: PokeApi?, imageLoader: ImageLoader?) {
     ) {
         val context = LocalContext.current
 
-        Row(Modifier.padding(10.dp).fillMaxWidth(), Arrangement.Start) {
+        Row(
+            Modifier
+                .padding(10.dp)
+                .fillMaxWidth(), Arrangement.Start) {
             FilledIconButton(onClick = { (context as? Activity)?.finish() }) {
                 Icon(Icons.Default.ArrowBack, "")
             }
