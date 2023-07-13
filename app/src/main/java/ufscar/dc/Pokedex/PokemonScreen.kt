@@ -1,11 +1,15 @@
 package ufscar.dc.Pokedex
 
+import android.content.ContentValues
 import android.os.AsyncTask
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.Switch
 import android.widget.TextView
+import android.widget.Toast
+import android.widget.ToggleButton
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
@@ -28,11 +32,13 @@ import kotlinx.coroutines.withContext
 import org.jetbrains.annotations.Async
 import retrofit2.Response
 import ufscar.dc.Pokedex.databinding.ActivityPokemonScreenBinding
+import java.lang.Exception
 
 class PokemonScreen : AppCompatActivity(), CoroutineScope by MainScope(){
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityPokemonScreenBinding
+    private lateinit var dbHelper: DbHelper
 
     private var layoutManager: RecyclerView.LayoutManager? = null
     private var adapter: RecyclerView.Adapter<CustomAdapter.ViewHolder>? = null
@@ -40,7 +46,7 @@ class PokemonScreen : AppCompatActivity(), CoroutineScope by MainScope(){
     private var recyclerView: RecyclerView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
+        dbHelper = DbHelper(this)
         val pokeApi = getPokeApi(this.applicationContext).create(PokeApi::class.java)
 //        println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
 //        println(pokeApi)
@@ -78,13 +84,45 @@ class PokemonScreen : AppCompatActivity(), CoroutineScope by MainScope(){
 
         }
 
+
+        val toggle = findViewById<ToggleButton>(R.id.toggleButton2)
+
+
+        val ids = dbHelper.getAllPoke()
+        println("IUHUU GOT CATCH EM ALL: " + ids)
+
+        if(toggle.isChecked && ids.find { it == id } == null){
+            toggle.isChecked = false
+        }
+        else if(!toggle.isChecked && ids.find { it == id } != null){
+            toggle.isChecked = true
+        }
+
+        toggle.setOnCheckedChangeListener{
+            _, isChecked ->
+            run {
+                if (!isChecked) {
+                        if(ids.find { it == id } != null){
+                            dbHelper.deletePoke(id)
+                            ids.remove(id)
+                            println("SQL Confirm del: ")
+                        }
+
+                }
+                else{
+                        dbHelper.insertPoke(id)
+                        ids.add(id)
+                        println("SQL Confirmed: ")
+                }
+            }
+        }
+
         val back = findViewById<FloatingActionButton>(R.id.floatingActionButton)
         back.setOnClickListener{
             finish()
         }
-
-
     }
+
 
     suspend fun listUpd(poke: Pokemon) : ArrayList<ArrayList<String>>{
         val myList = ArrayList<ArrayList<String>>()
@@ -116,7 +154,9 @@ class PokemonScreen : AppCompatActivity(), CoroutineScope by MainScope(){
         return asyncPoke.await().body()
 
     }
-
-
 }
+
+
+
+
 

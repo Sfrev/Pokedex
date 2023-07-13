@@ -159,7 +159,6 @@ fun ListedPokemonCard(
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
-
                 Box(contentAlignment = Alignment.BottomEnd) {
                     Surface(tonalElevation = 2.dp, shape = RoundedCornerShape(12.dp)) {
                         CardImage(page, item, imageLoader)

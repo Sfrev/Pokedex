@@ -4,6 +4,8 @@
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
+    <string name="toggle_on">Caught</string>
+    <string name="toggle_off">Wild</string>
     <string name="next">SFREVAO</string>
     <string name="previous">Previous</string>
 
