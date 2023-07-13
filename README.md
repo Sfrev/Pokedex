@@ -2,8 +2,8 @@
 
 ### Integrantes
 
-Gabriel de Jesus Dantas RA: 773412
-Igor Teixeira Machado RA: 769708
+Gabriel de Jesus Dantas RA: 773412  
+Igor Teixeira Machado RA: 769708  
 Miguel Antônio de Oliveira: 772180
 
 ### Descrição
