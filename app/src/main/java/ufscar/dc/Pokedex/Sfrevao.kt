@@ -139,7 +139,7 @@ fun CardImage(page: Int, item: Int, imageLoader: ImageLoader?) {
         )
     } else {
         Image(
-            ImageBitmap.imageResource(id = R.drawable.img),
+            ImageBitmap.imageResource(id = R.drawable.creature_placeholder),
             contentDescription = "",
             modifier = Modifier.size(80.dp),
         )
