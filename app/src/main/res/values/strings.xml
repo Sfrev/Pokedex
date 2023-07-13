@@ -4,6 +4,9 @@
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next" translatable="false">SFREVAO</string>
+    <string name="toggle_on" translatable="false">Caught</string>
+    <string name="toggle_off" translatable="false">Wild</string>
+    <string name="action_settings" translatable="false">action</string>
     <string name="previous">Previous</string>
 
     <string name="lorem_ipsum" translatable="false">
