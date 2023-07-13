@@ -69,7 +69,6 @@ class PokemonScreen : AppCompatActivity(), CoroutineScope by MainScope(){
             val poke = getPoke(pokeApi, id)
 
             val text = findViewById<TextView>(R.id.textView)
-            println(poke)
 
             val name = poke?.name?.replaceFirstChar { it.titlecase(Locale.getDefault()) } ?: "JESUS"
 
