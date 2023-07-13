@@ -25,8 +25,10 @@ class FirstFragment() : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        val btn1 = requireActivity().findViewById<Button>(R.id.button_instrucoes)
         val btn2 = requireActivity().findViewById<Button>(R.id.button_pokedex_completa)
         val btn3 = requireActivity().findViewById<Button>(R.id.button_pokemons_capturados)
+        btn1.visibility = View.INVISIBLE
         btn2.visibility = View.INVISIBLE
         btn3.visibility = View.INVISIBLE
 
@@ -41,8 +43,10 @@ class FirstFragment() : Fragment() {
 
         binding.buttonFirst.setOnClickListener {
 //            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+            val btn1 = requireActivity().findViewById<Button>(R.id.button_instrucoes)
             val btn2 = requireActivity().findViewById<Button>(R.id.button_pokedex_completa)
             val btn3 = requireActivity().findViewById<Button>(R.id.button_pokemons_capturados)
+            btn1.visibility = View.VISIBLE
             btn2.visibility = View.VISIBLE
             btn3.visibility = View.VISIBLE
             requireActivity().supportFragmentManager.beginTransaction().remove(this).commit()
