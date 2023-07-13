@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="first_fragment_label">Primeiro Fragmento</string>
+    <string name="second_fragment_label">Segundo Fragmento</string>
+    <string name="previous">Anterior</string>
+    <string name="instructions">Instruções</string>
+    <string name="complete_pokedex">Pokédex Completa</string>
+    <string name="captured_pokemons">Pokemons Capturados</string>
+</resources>
